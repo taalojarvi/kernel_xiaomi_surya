@@ -1762,6 +1762,7 @@ const char *cmd_set_prop_map[DSI_CMD_SET_MAX] = {
 	"qcom,mdss-dsi-post-mode-switch-on-command",
 	"qcom,mdss-dsi-qsync-on-commands",
 	"qcom,mdss-dsi-qsync-off-commands",
+	"qcom,mdss-dsi-dispparam-lcd-hbm-l1-on-command",
 	"qcom,mdss-dsi-dispparam-lcd-hbm-l2-on-command",
 	"qcom,mdss-dsi-dispparam-lcd-hbm-off-command",
 };
@@ -1790,6 +1791,7 @@ const char *cmd_set_state_map[DSI_CMD_SET_MAX] = {
 	"qcom,mdss-dsi-post-mode-switch-on-command-state",
 	"qcom,mdss-dsi-qsync-on-commands-state",
 	"qcom,mdss-dsi-qsync-off-commands-state",
+	"qcom,mdss-dsi-dispparam-lcd-hbm-l1-on-command-state",
 	"qcom,mdss-dsi-dispparam-lcd-hbm-l2-on-command-state",
 	"qcom,mdss-dsi-dispparam-lcd-hbm-off-command-state",
 };
@@ -4425,6 +4427,7 @@ int dsi_panel_apply_hbm_mode(struct dsi_panel *panel)
 {
 	static const enum dsi_cmd_set_type type_map[] = {
 		DSI_CMD_SET_DISP_LCD_HBM_OFF,
+		DSI_CMD_SET_DISP_LCD_HBM_L1_ON,
 		DSI_CMD_SET_DISP_LCD_HBM_L2_ON
 	};
 
