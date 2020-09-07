@@ -18,7 +18,7 @@
 #include <trace/events/power.h>
 #include <linux/binfmts.h>
 #include <linux/sched/sysctl.h>
-
+#include <linux/battery_saver.h>
 #include "sched.h"
 
 #define SUGOV_KTHREAD_PRIORITY	50
@@ -318,6 +318,9 @@ static void sugov_get_util(unsigned long *util, unsigned long *max, int cpu,
 static void sugov_set_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
 				   unsigned int flags)
 {
+	if (is_battery_saver_on())
+		return;
+
 	if (flags & SCHED_CPUFREQ_IOWAIT) {
 		if (sg_cpu->iowait_boost_pending)
 			return;
