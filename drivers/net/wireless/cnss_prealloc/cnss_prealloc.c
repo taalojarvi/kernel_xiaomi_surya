@@ -367,10 +367,11 @@ static int __init wcnss_pre_alloc_init(void)
 			PRE_ALLOC_DEBUGFS_FILE_OBJ,
 			0644, debug_base, NULL,
 			&prealloc_memory_stats_fops))) {
-		pr_err("%s: Failed to create debugfs file\n", __func__);
+		pr_debug("%s: Failed to create debugfs file\n", __func__);
 		debugfs_remove_recursive(debug_base);
 	}
 #endif
+
 	return ret;
 }
 
