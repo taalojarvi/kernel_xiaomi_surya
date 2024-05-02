@@ -130,3 +130,9 @@ kernel/configs/android-*.cfg
 #Ignoring Android.bp link file
 #
 Android.bp
+
+#Ignore the files that are made/downloaded during build run
+AnyKernel3
+Neutron
+Neutron.tar.zst
+out
