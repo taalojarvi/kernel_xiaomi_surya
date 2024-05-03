@@ -1,0 +1,35 @@
+
+name: Build Kernel on Github Actions
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: panchajanya1999/archlinux:latest
+    steps:
+      - name: Setup env
+        run: pacman -Sy --noconfirm && pacman -S archlinux-keyring --noconfirm && pacman -Syu --needed --noconfirm wget base-devel xmlto inetutils bc cpio python-sphinx python-sphinx_rtd_theme graphviz imagemagick git python zip github-cli fortune-mod ccache jre8-openjdk
+      - uses: actions/checkout@v4
+      - name: Add repo as a safe directory
+        run: git config --global --add safe.directory /__w/kernel_xiaomi_surya/kernel_xiaomi_surya
+      - name: Checkout submodules
+        run: git submodule update --init --recursive --remote
+      - name: Initialize ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          max-size: 2048M
+      - name: Build Sunscape Kernel
+        run: |
+          bash ci_build.sh
+        env:
+          token: ${{secrets.TG_TOKEN}}
+      - name: Upload kernel package to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: Flashable zip
+         path: AnyKernel3/package.zip
