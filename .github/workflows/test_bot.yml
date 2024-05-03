@@ -1,0 +1,17 @@
+name: Test Telegram Bot API 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test if the Telegram bot is set up correctly
+        run: |
+          export BOT_TEST_URL="https://api.telegram.org/bot$token/getMe" 
+          curl -s -X POST "$BOT_TEST_URL" || echo -e "Failure"
+        env:
+          token: ${{ secrets.TG_TOKEN }}
+

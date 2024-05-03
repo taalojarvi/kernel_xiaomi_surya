@@ -1,0 +1,13 @@
+env:
+    token: "ENCRYPTED[a00ccb780abdc396522d811f6ae1b5ed8e2c0b09c82b7cd3fe8de3b6ec81570a36ff28d6744387d3a895a81461b4dd82]"
+
+task:
+  name: "Sunscape Kernel Builder"
+  timeout_in: 1h
+  container:
+      image: panchajanya1999/archlinux:latest
+      cpu: 8
+      memory: 32G
+
+  Build_script:
+      - bash cirrus.sh
