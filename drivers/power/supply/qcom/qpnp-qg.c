@@ -4327,7 +4327,7 @@ static int qg_alg_init(struct qpnp_qg *chip)
 #define DEFAULT_TCSS_ENTRY_SOC		90
 static int qg_parse_dt(struct qpnp_qg *chip)
 {
-	int rc = 0, size;
+	int rc = 0, size = 0;
 	struct device_node *revid_node, *child, *node = chip->dev->of_node;
 	u32 base, temp;
 	u8 type;
