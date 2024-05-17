@@ -46,6 +46,7 @@ export BUILD_ID=$((GITHUB_RUN_NUMBER + 199))
 export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
 export SYSMEM="$(($(vmstat -s | grep -i 'total memory' | sed 's/ *//' | sed 's/total//g;s/memory//g;s/K//g;s/  / /g') / 1000))"
 export GITBRNCH="$(git rev-parse --abbrev-ref HEAD)"
+export BLDBRNCH="$(echo $GITBRNCH | sed 's/\//_/g')"
 if [ "$(cat /sys/devices/system/cpu/smt/active)" = "1" ]; then
 		export THREADS=$(($(nproc --all) * 2))
 	else
@@ -109,7 +110,7 @@ cd AnyKernel3
 zip -r9 UPDATE-AnyKernel3.zip * -x README.md LICENSE UPDATE-AnyKernel3.zip zipsigner.jar
 cp UPDATE-AnyKernel3.zip package.zip 
 curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-java -jar zipsigner-3.0.jar UPDATE-AnyKernel3.zip Sunscape-$GITBRNCH-$BUILD_ID.zip
+java -jar zipsigner-3.0.jar UPDATE-AnyKernel3.zip Sunscape-$BLDBRNCH-$BUILD_ID.zip
 BUILD_END=$(date +"%s")
 DIFF=$((BUILD_END - BUILD_START))
-tg_post_build "Sunscape-$GITBRNCH-$BUILD_ID.zip" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+tg_post_build "Sunscape-$BLDBRNCH-$BUILD_ID.zip" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
