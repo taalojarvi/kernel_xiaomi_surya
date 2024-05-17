@@ -201,9 +201,15 @@ enum hvdcp3_type {
 #define NON_FFC_VFLOAT_VOTER			"NON_FFC_VFLOAT_VOTER"
 #define NON_FFC_VFLOAT_UV			4450000
 #define PD_UNVERIFED_CURRENT		4800000
+
+#define CP_COOL_THRESHOLD               150
+#define CP_WARM_THRESHOLD               450
+#define SOFT_JEITA_HYSTERESIS           5
+
 /* used for bq charge pump solution */
 #define MAIN_CHARGER_ICL	2000000
 #define QC3_CHARGER_ICL		500000
+#define QC3P5_CHARGER_ICL   200000
 
 #define MAIN_CHARGER_STOP_ICL	50000
 #define ESR_WORK_TIME_2S	2000

@@ -63,7 +63,7 @@ static int qg_determine_pon_soc(struct qpnp_qg *chip);
 static int qg_sanitize_sdam(struct qpnp_qg *chip);
 static int qg_setup_battery(struct qpnp_qg *chip);
 static int qg_post_init(struct qpnp_qg *chip);
-bool profile_6000mah_judge =false;
+bool profile_6000mah_judge = false;
 
 static bool is_battery_present(struct qpnp_qg *chip)
 {
@@ -3466,6 +3466,13 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 		chip->bp.fastchg_curr_ma = -EINVAL;
 	}
 
+	rc = of_property_read_u32(profile_node, "qcom,nom-batt-capacity-mah",
+                &chip->bp.nom_cap_uah);
+    if (rc < 0) {
+        pr_err("battery nominal capacity unavailable, rc:%d\n", rc);
+        chip->bp.nom_cap_uah = -EINVAL;
+        }
+
 	/*
 	 * Update the max fcc values based on QG subtype including
 	 * error margins.
@@ -4282,45 +4289,45 @@ static int qg_alg_init(struct qpnp_qg *chip)
 	return 0;
 }
 
-#define DEFAULT_VBATT_EMPTY_MV		3200
-#define DEFAULT_VBATT_EMPTY_COLD_MV	3000
-#define DEFAULT_VBATT_CUTOFF_MV		3400
-#define DEFAULT_VBATT_LOW_MV		3500
-#define DEFAULT_VBATT_LOW_COLD_MV	3800
-#define DEFAULT_ITERM_MA		100
-#define DEFAULT_S2_FIFO_LENGTH		5
-#define DEFAULT_S2_VBAT_LOW_LENGTH	2
-#define DEFAULT_S2_ACC_LENGTH		128
-#define DEFAULT_S2_ACC_INTVL_MS		100
+#define DEFAULT_VBATT_EMPTY_MV			3200
+#define DEFAULT_VBATT_EMPTY_COLD_MV		3000
+#define DEFAULT_VBATT_CUTOFF_MV			3400
+#define DEFAULT_VBATT_LOW_MV			3500
+#define DEFAULT_VBATT_LOW_COLD_MV		3800
+#define DEFAULT_ITERM_MA				100
+#define DEFAULT_S2_FIFO_LENGTH			5
+#define DEFAULT_S2_VBAT_LOW_LENGTH		2
+#define DEFAULT_S2_ACC_LENGTH			128
+#define DEFAULT_S2_ACC_INTVL_MS			100
 #define DEFAULT_SLEEP_S2_FIFO_LENGTH	8
-#define DEFAULT_SLEEP_S2_ACC_LENGTH	256
+#define DEFAULT_SLEEP_S2_ACC_LENGTH		256
 #define DEFAULT_SLEEP_S2_ACC_INTVL_MS	200
-#define DEFAULT_DELTA_SOC		1
-#define DEFAULT_SHUTDOWN_SOC_SECS	360
-#define DEFAULT_COLD_TEMP_THRESHOLD	0
-#define DEFAULT_CL_MIN_START_SOC	10
-#define DEFAULT_CL_MAX_START_SOC	15
+#define DEFAULT_DELTA_SOC				1
+#define DEFAULT_SHUTDOWN_SOC_SECS		360
+#define DEFAULT_COLD_TEMP_THRESHOLD		0
+#define DEFAULT_CL_MIN_START_SOC		10
+#define DEFAULT_CL_MAX_START_SOC		15
 #define DEFAULT_CL_MIN_TEMP_DECIDEGC	150
 #define DEFAULT_CL_MAX_TEMP_DECIDEGC	500
-#define DEFAULT_CL_MAX_INC_DECIPERC	10
-#define DEFAULT_CL_MAX_DEC_DECIPERC	20
-#define DEFAULT_CL_MIN_LIM_DECIPERC	500
-#define DEFAULT_CL_MAX_LIM_DECIPERC	100
-#define DEFAULT_CL_DELTA_BATT_SOC	10
-#define DEFAULT_CL_WT_START_SOC		15
-#define DEFAULT_SHUTDOWN_TEMP_DIFF	60	/* 6 degC */
-#define DEFAULT_ESR_QUAL_CURRENT_UA	130000
-#define DEFAULT_ESR_QUAL_VBAT_UV	7000
-#define DEFAULT_ESR_DISABLE_SOC		1000
-#define ESR_CHG_MIN_IBAT_UA		(-450000)
-#define DEFAULT_SLEEP_TIME_SECS		1800 /* 30 mins */
-#define DEFAULT_SYS_MIN_VOLT_MV		2800
+#define DEFAULT_CL_MAX_INC_DECIPERC		10
+#define DEFAULT_CL_MAX_DEC_DECIPERC		20
+#define DEFAULT_CL_MIN_LIM_DECIPERC		500
+#define DEFAULT_CL_MAX_LIM_DECIPERC		100
+#define DEFAULT_CL_DELTA_BATT_SOC		10
+#define DEFAULT_CL_WT_START_SOC			15
+#define DEFAULT_SHUTDOWN_TEMP_DIFF		60	/* 6 degC */
+#define DEFAULT_ESR_QUAL_CURRENT_UA		130000
+#define DEFAULT_ESR_QUAL_VBAT_UV		7000
+#define DEFAULT_ESR_DISABLE_SOC			1000
+#define ESR_CHG_MIN_IBAT_UA				(-450000)
+#define DEFAULT_SLEEP_TIME_SECS			1800 /* 30 mins */
+#define DEFAULT_SYS_MIN_VOLT_MV			2800
 #define DEFAULT_FAST_CHG_S2_FIFO_LENGTH	1
-#define DEFAULT_FVSS_VBAT_MV		3500
-#define DEFAULT_TCSS_ENTRY_SOC		90
+#define DEFAULT_FVSS_VBAT_MV			3500
+#define DEFAULT_TCSS_ENTRY_SOC			90
 static int qg_parse_dt(struct qpnp_qg *chip)
 {
-	int rc = 0, size;
+	int rc = 0, size = 0;
 	struct device_node *revid_node, *child, *node = chip->dev->of_node;
 	u32 base, temp;
 	u8 type;
@@ -5002,7 +5009,6 @@ static int qpnp_qg_probe(struct platform_device *pdev)
 	memset(chip->ds_status, 0, 8);
 	memset(chip->ds_page0, 0, 16);
 	retry_batt_profile = 0;
-	//retry_battery_authentic_result = 0;
 	retry_ds_romid = 0;
 	retry_ds_status = 0;
 	retry_ds_page0 = 0;

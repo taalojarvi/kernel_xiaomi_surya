@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019 The Linux Foundation. All rights reserved.
+	/* Copyright (c) 2017-2019 The Linux Foundation. All rights reserved.
  * Copyright (C) 2020 XiaoMi, Inc.
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -12,6 +12,9 @@
 
 #ifndef __STEP_CHG_H__
 #define __STEP_CHG_H__
+
+#define BATT_CP_COOL_THRESHOLD          150
+#define BATT_CP_WARM_THRESHOLD          450
 
 #define MAX_STEP_CHG_ENTRIES	8
 
