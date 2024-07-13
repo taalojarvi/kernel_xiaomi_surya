@@ -755,9 +755,7 @@ KBUILD_CFLAGS	+= -mcpu=cortex-a76.cortex-a55+crypto+crc
 endif
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -mcpu=cortex-a76+crypto+crc
-ifdef CONFIG_LTO_CLANG
-KBUILD_CFLAG	+= -fwhole-program-vtables
-endif
+
 ifdef CONFIG_GCC_GRAPHITE
 GRAPHITE_FLAGS	+= -floop-block \
 			 -ftree-vectorize \
