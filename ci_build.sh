@@ -81,6 +81,13 @@ tg_post_build() {
 	-F caption="$2 | *MD5 Checksum : *\`$MD5CHECK\`"
 }
 
+if [[ "$GITHUB_ACTIONS" =~ true ]]; then
+ 	echo -e "GitHub Actions runner detected. Switching to Full LTO"
+  	sed -i 's/CONFIG_THINLTO=y/# CONFIG_THINLTO is not set/' arch/arm64/configs/surya_defconfig
+else
+  	echo -e "Skipping patch: $patch_file"
+ fi
+
 # Make defconfig
 # make $DEFCONFIG LD=aarch64-elf-ld.lld O=out/
 make $DEFCONFIG -j$THREADS CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out
